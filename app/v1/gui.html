@@ -1,0 +1,65 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>GUI DMS SCHIPHOL</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon" type="image/png" id="favicon" href="img/favicon.ico" />
+	<link rel="stylesheet" href="/aim/v1/lib/css/app.css" />
+	<link href="css/dms.gui.css" rel="stylesheet" />
+	<script type="text/javascript" charset="UTF-8" src="/dms/v1/api/js?local=api&host&auth"></script>
+	<script src="/aim/v1/lib/js/config/default.js"></script>
+	<script src="js/dms.js"></script>
+	<script src="js/dms.gui.js"></script>
+</head>
+<body class="col">
+	<nav class="row head">
+		<div style="width:400px;color:white;">
+			<img src="img/dynniq.png" />
+			<div id="elementTime">UTC time:</div>
+			<div id="acsmconnect">ACSM Status: Offline</div>
+		</div>
+		<div class="aco row" id="index" style="flex-wrap:wrap;">
+			<ul class="row" style="padding:0;margin:0;list-style:none;">
+				<li><div class="symbol row" Running>Geen<br /> fouten</div></li>
+				<li><div class="symbol row" CriticalFailure>Storing<br />urgent </div></li>
+				<li><div class="symbol row" NonCriticalFailure>Storing<br />niet urgent</div></li>
+				<li><div class="symbol row" Warning><span>Voorwaarschuwing<br />ongewenste stand</span></div></li>
+				<li><div class="symbol row" error="X">Storing<br />Communicatie</div></li>
+			</ul>
+		</div>
+		<div style="width:200px;text-align:center;"><img src="img/plane.png" style="" /></div>
+	</nav>
+	<div class="row aco">
+		<div class="col" style="border-right:solid 1px gray;height:100%;flex-basis:400px;">
+			<div class="row top">Navigatie</div>
+			<div class="aco col" id="folders" style="height:0px;"></div>
+		</div>
+		<div class="col aco">
+			<div class="row top">
+				<button id="actueel" checked name="datatype" type="button" class="abtn his" onclick="select(this);">Actueel</button>
+				<!--<button id="history" name="datatype" type="button" class="abtn" onclick="select(this);">History</button>-->
+
+				<button id="uur1" name="tijd" type="button" class="abtn his" onclick="select(this);">1 uur</button>
+				<button id="uur4" name="tijd" type="button" class="abtn his" onclick="select(this);">4 uur</button>
+				<button id="uur24" name="tijd" type="button" class="abtn his" onclick="select(this);">24 uur</button>
+				<button id="filter" type="button" class="abtn his" onclick="select(this);">Filter</button>
+
+				<button id="alles" class="abtn r filter" onclick="select(this);">Alles</button>
+				<button id="alarm" checked class="abtn filter" onclick="select(this);">Alarmen</button>
+				<button id="state" checked class="abtn filter" onclick="select(this);">Statussen</button>
+				<button id="measurement" checked class="abtn filter" onclick="select(this);">Meetwaarden</button>
+				<!--<button id="other" checked class="abtn filter" onclick="select(this);">Overig</button>-->
+			</div>
+			<div class="aco col oa" style="height:0px;">
+				<table>
+					<thead>
+						<tr><td width="10"></td><td width="160">Datum tijd</td><td width="160">Tag</td><td width="160">Tekst</td><td>Omschrijving</td><td width="160">ACSM</td></tr>
+					</thead>
+					<tbody id="list"></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div id="loadlog1"></div>
+</body>
+</html>

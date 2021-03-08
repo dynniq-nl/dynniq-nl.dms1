@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+	<title>DMS SOAP Dashboard</title>
+	<link href="../css/test.css" rel="stylesheet" />
+	<style>
+		input:not([type]) {
+			width: 800px;
+		}
+	</style>
+	<script src="js/acsm.js"></script>
+	<script>
+		function dmsClientSend() {
+			var WebLogItem = {}, input = { WebLogItemArray: [WebLogItem] };
+			for (var i = 0, e; e = dmsClient.elements[i]; i++) if (e.name) WebLogItem[e.name] = e.value;
+
+			response.innerText = JSON.stringify({ input: input }, null, 2);
+			console.log('dmsClientSend', input);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('put', "http://localhost/sites/dms/api/v1/acsm/index.php?weblog", true);
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4) {
+					if (this.status == 200) {
+						console.log(this.responseText);
+						response.innerText += this.responseText;
+					}
+				}
+			}
+			xhr.send(JSON.stringify(input));
+		}
+	</script>
+</head>
+<body>
+	<h1>DMS SOAP Dashboard</h1>
+	<form id="dmsClient" action="" method="post">
+		<table>
+			<tr><td>SystemInstanceID</td><td><input name="SystemInstanceID" value="1" type="number" /></td></tr>
+			<tr><td>GroupID</td><td><input name="GroupID" value="1" type="number" /></td></tr>
+			<tr><td>LocationID</td><td><input name="LocationID" value="1" type="number" /></td></tr>
+			<tr><td>TagID</td><td><input name="TagID" value="1" type="number" /></td></tr>
+			<tr><td>LogType</td><td><input name="LogType" value="TagAttribute" type="text" /></td></tr>
+			<tr><td>TextualValue</td><td><input name="TextualValue" value="test dms-acsm.html" type="text" /></td></tr>
+			<tr><td>NumericValue</td><td><input name="NumericValue" value="1" type="number" /></td></tr>
+			<!--<tr><td>TimeStamp</td><td><input name="TimeStamp" value="2019-01-01 12:00" type="text" /></td></tr>-->
+			<tr>
+				<td>Quality</td>
+				<td>
+					<select name="Quality" value="Valid" type="text">
+						<option>Valid</option>
+						<option>NotValid</option>
+						<option>CommunicationError</option>
+						<option>UnInitialized</option>
+					</select>
+				</td>
+			</tr>
+			<tr><td>StandardOutput</td><td><input name="StandardOutput" value="CriticalFailure" type="text" /></td></tr>
+		</table>
+		<div><input type="button" value="SEND" onclick="dmsClientSend();" /></div>
+	</form>
+	<div>
+		<div style="overflow:auto;max-height:500px;"><pre id="response"></pre></div>
+	</div>
+
+</body>
+</html>

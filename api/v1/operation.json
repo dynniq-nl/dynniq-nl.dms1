@@ -1,0 +1,1 @@
+{"GetHistoricalData":{"HistoricalDataRequestFilter":{"Location":"J2_Test111","SendLocationStandardOutput":true,"SendGroupStandardOutput":true,"ReportURL":"http:\/\/localhost\/sites\/dms\/api\/v1\/sim.acsm\/CentralReportWebservice.wsdl","SystemInstanceID":417,"StartDate":"2019-08-27","EndDate":"2019-08-27"}}}

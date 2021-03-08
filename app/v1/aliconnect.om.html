@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="nl-NL" class="app">
+<head>
+	<title>TMS Object Manager</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="shortcut icon" type="image/png" id="favicon" href="/sites/dynniq/app/img/favicon.ico" />
+	<link rel="stylesheet" href="https://aliconnect.nl/aim/v1/lib/css/icon.css" />
+	<link rel="stylesheet" href="https://aliconnect.nl/aim/v1/lib/css/page.css" />
+	<link rel="stylesheet" href="https://aliconnect.nl/aim/v1/lib/css/app.css" />
+	<link rel="stylesheet" href="https://aliconnect.nl/aim/v1/lib/css/om.css" />
+	<link rel="stylesheet" href="https://aliconnect.nl/aim/v1/lib/css/theme/aliconnect.css" />
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/tms/v1/api/js?auth&local=api"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/aim/v1/lib/js/config/default.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/aim/v1/lib/js/app.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/aim/v1/lib/js/alert.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/aim/v1/lib/js/om.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://aliconnect.nl/inc/js/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://apis.google.com/js/platform.js"></script>
+	<script type="text/javascript" charset="UTF-8" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKNir6jia2uSgmEoLFvrbcMztx-ao_Oys&libraries=places&callback=Aim.maps.init" defer async></script>
+	<script type="text/javascript" charset="UTF-8" src="lib/js/dms.config.js"></script>
+</head>
+<body class="col aim om dark">
+	<div id="ckeTop" style="display:none;"></div>
+	<div id="navtop" class="row top bar topbtns btnbar noselect np"></div>
+	<div class="row aco">
+		<nav id="navleft" class="col aco noselect np"></nav>
+		<div class="seperator noselect"></div>
+		<nav id="navtree" class="col aco atv noselect np" open="1"></nav>
+		<div class="noselect seperator noselect"></div>
+		<div class="col aco main printcol">
+			<nav id="collist" view="rows" class="col aco alv"></nav>
+			<div id="alertpanel" class="row alerts"></div>
+		</div>
+		<!--<nav id="colboard" class="col aco abv oa lo noselect"></nav>-->
+		<div right class="noselect seperator noselect"></div>
+		<div id="colpage" class="col aco apv printcol"></div>
+		<div id="colinfo" class="col ainf"></div>
+		<div id="colpanel"></div>
+	</div>
+	<iframe id="baseframe" name="baseframe" class="col " style="display:none;"></iframe>
+	<div id="popupmessage"></div>
+</body>
+</html>

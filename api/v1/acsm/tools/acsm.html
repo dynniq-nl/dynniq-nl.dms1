@@ -1,0 +1,65 @@
+﻿<html>
+<head>
+	<title>ACSM SOAP Dashboard</title>
+	<link href="../css/test.css" rel="stylesheet" />
+	<style>
+		input:not([type]) {
+			width: 800px;
+		}
+	</style>
+	<script>
+		function acsmClientSend(operation, post) {
+
+			var input = !post ? null : {
+				Location: acsmClient.elements.Location.value,
+				SendLocationStandardOutput: acsmClient.elements.SendLocationStandardOutput.checked,
+				SendGroupStandardOutput: acsmClient.elements.SendGroupStandardOutput.checked,
+				ReportURL: acsmClient.elements.ReportURL.value,
+				SystemInstanceID: acsmClient.elements.SystemInstanceID.value,
+				StartDate: acsmClient.elements.StartDate.value + (acsmClient.elements.StartDate.value.split(':').length == 2 ? ':00' : '') + 'Z',
+				EndDate: acsmClient.elements.EndDate.value + (acsmClient.elements.EndDate.value.split(':').length == 2 ? ':00' : '') + 'Z',
+			}
+
+			response.innerText = JSON.stringify({ operation: operation, input: input }, null, 2);
+			console.log('dmsClientSend', input);
+
+			var xhr = new XMLHttpRequest();
+			xhr.open('post', '/sites/dms/api/v1/acsm/test.php?operation=' + operation, true);
+			xhr.onreadystatechange = function () {
+				if (this.readyState == 4) {
+					if (this.status == 200) {
+						console.log(this.url, this.responseText);
+						response.innerText += this.responseText;
+					}
+				}
+			}
+			xhr.send(JSON.stringify(input));
+		}
+	</script>
+</head>
+<body>
+	<h1>ACSM SOAP Dashboard</h1>
+	<form id="acsmClient" action="" method="post">
+		<table>
+			<tr><td>Location</td><td><input name="Location" value="J2_Test" /></td></tr>
+			<tr><td>SendLocationStandardOutput</td><td><input name="SendLocationStandardOutput" type="checkbox" /></td></tr>
+			<tr><td>SendGroupStandardOutput</td><td><input name="SendGroupStandardOutput" type="checkbox" /></td></tr>
+
+			<!--<tr><td>ReportURL</td><td><input name="ReportURL" id="ReportURL" type="text" style="width:100%;" value="http://192.168.1.201/sites/dms/api/v1/acsm/CentralReportWebservice.wsdl" /></td></tr>-->
+			<!--<tr><td>ReportURL</td><td><input name="ReportURL" id="ReportURL" type="text" style="width:100%;" value="http://172.22.208.37:30070/CentralReportWebservice.wsdl" /></td></tr>-->
+
+			<tr><td>ReportURL</td><td><input name="ReportURL" id="ReportURL" type="text" style="width:100%;" value="http://localhost/sites/dms/api/v1/acsm/test.php" /></td></tr>
+			<tr><td>SystemInstanceID</td><td><input name="SystemInstanceID" type="number" value="417" /></td></tr>
+			<tr><td>StartDate</td><td><input name="StartDate" type="datetime-local" value="2018-01-01T00:00:00" step="1" /></td></tr>
+			<tr><td>EndDate</td><td><input name="EndDate" type="datetime-local" value="2018-01-01T23:59:59" step="1" /></td></tr>
+		</table>
+		<div>
+			<input type="button" value="Subscribe" onclick="acsmClientSend('Subscribe',true);" />
+			<input type="button" value="StopSubscription" onclick="acsmClientSend('StopSubscription');" />
+			<input type="button" value="GetSubscriptionState" onclick="acsmClientSend('GetSubscriptionState');" />
+			<!--<input type="button" value="GetHistoricalData" onclick="acsmClientSend('GetHistoricalData');" />-->
+		</div>
+	</form>
+	<pre id="response"></pre>
+</body>
+</html>

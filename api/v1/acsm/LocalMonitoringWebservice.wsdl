@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions name="LocalMonitoring" targetNamespace="http://imtech.eu" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://imtech.eu/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+	<wsdl:types>
+		<s:schema elementFormDefault="qualified" targetNamespace="http://imtech.eu/">
+			<s:complexType name="SubscriptionFilter">
+				<s:sequence>
+					<s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="SendLocationStandardOutput" type="s:boolean" />
+					<s:element minOccurs="1" maxOccurs="1" name="SendGroupStandardOutput" type="s:boolean" />
+					<s:element minOccurs="0" maxOccurs="1" name="ReportURL" type="s:string" />
+					<s:element minOccurs="1" maxOccurs="1" name="SystemInstanceID" type="s:int" />
+					<s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+					<s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+				</s:sequence>
+			</s:complexType>
+			<s:element name="Subscribe">
+				<s:complexType>
+					<s:sequence>
+						<!--<s:element minOccurs="0" maxOccurs="1" name="SubscribeRequestFilter" type="tns:SubscriptionFilter" />-->
+						<s:element minOccurs="0" maxOccurs="1" name="Location" type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="SendLocationStandardOutput" type="s:boolean" />
+						<s:element minOccurs="1" maxOccurs="1" name="SendGroupStandardOutput" type="s:boolean" />
+						<s:element minOccurs="0" maxOccurs="1" name="ReportURL" type="s:string" />
+						<s:element minOccurs="1" maxOccurs="1" name="SystemInstanceID" type="s:int" />
+						<s:element minOccurs="1" maxOccurs="1" name="StartDate" type="s:dateTime" />
+						<s:element minOccurs="1" maxOccurs="1" name="EndDate" type="s:dateTime" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="SubscribeResponse">
+				<s:complexType />
+			</s:element>
+			<s:element name="StopSubscription">
+				<s:complexType />
+			</s:element>
+			<s:element name="StopSubscriptionResponse">
+				<s:complexType />
+			</s:element>
+			<s:element name="GetSubscriptionState">
+				<s:complexType />
+			</s:element>
+			<s:element name="GetSubscriptionStateResponse">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="GetSubscriptionStateResult" type="s:string" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetHistoricalData">
+				<s:complexType>
+					<s:sequence>
+						<s:element minOccurs="0" maxOccurs="1" name="HistoricalDataRequestFilter" type="tns:SubscriptionFilter" />
+					</s:sequence>
+				</s:complexType>
+			</s:element>
+			<s:element name="GetHistoricalDataResponse">
+				<s:complexType />
+			</s:element>
+		</s:schema>
+	</wsdl:types>
+	<wsdl:message name="SubscribeSoapIn">
+		<wsdl:part name="parameters" element="tns:Subscribe" />
+	</wsdl:message>
+	<wsdl:message name="SubscribeSoapOut">
+		<wsdl:part name="parameters" element="tns:SubscribeResponse" />
+	</wsdl:message>
+	<wsdl:message name="StopSubscriptionSoapIn">
+		<wsdl:part name="parameters" element="tns:StopSubscription" />
+	</wsdl:message>
+	<wsdl:message name="StopSubscriptionSoapOut">
+		<wsdl:part name="parameters" element="tns:StopSubscriptionResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetSubscriptionStateSoapIn">
+		<wsdl:part name="parameters" element="tns:GetSubscriptionState" />
+	</wsdl:message>
+	<wsdl:message name="GetSubscriptionStateSoapOut">
+		<wsdl:part name="parameters" element="tns:GetSubscriptionStateResponse" />
+	</wsdl:message>
+	<wsdl:message name="GetHistoricalDataSoapIn">
+		<wsdl:part name="parameters" element="tns:GetHistoricalData" />
+	</wsdl:message>
+	<wsdl:message name="GetHistoricalDataSoapOut">
+		<wsdl:part name="parameters" element="tns:GetHistoricalDataResponse" />
+	</wsdl:message>
+	<wsdl:portType name="LocalMonitoringWebserviceSoap">
+		<wsdl:operation name="Subscribe">
+			<wsdl:input message="tns:SubscribeSoapIn" />
+			<wsdl:output message="tns:SubscribeSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="StopSubscription">
+			<wsdl:input message="tns:StopSubscriptionSoapIn" />
+			<wsdl:output message="tns:StopSubscriptionSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetSubscriptionState">
+			<wsdl:input message="tns:GetSubscriptionStateSoapIn" />
+			<wsdl:output message="tns:GetSubscriptionStateSoapOut" />
+		</wsdl:operation>
+		<wsdl:operation name="GetHistoricalData">
+			<wsdl:input message="tns:GetHistoricalDataSoapIn" />
+			<wsdl:output message="tns:GetHistoricalDataSoapOut" />
+		</wsdl:operation>
+	</wsdl:portType>
+	<wsdl:binding name="LocalMonitoringWebserviceSoap" type="tns:LocalMonitoringWebserviceSoap">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Subscribe">
+			<soap:operation soapAction="http://imtech.eu/Subscribe" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="StopSubscription">
+			<soap:operation soapAction="http://imtech.eu/StopSubscription" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSubscriptionState">
+			<soap:operation soapAction="http://imtech.eu/GetSubscriptionState" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetHistoricalData">
+			<soap:operation soapAction="http://imtech.eu/GetHistoricalData"  style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:binding name="LocalMonitoringWebserviceSoap12" type="tns:LocalMonitoringWebserviceSoap">
+		<soap12:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="Subscribe">
+			<soap12:operation soapAction="http://imtech.eu/Subscribe" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="StopSubscription">
+			<soap12:operation soapAction="http://imtech.eu/StopSubscription" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetSubscriptionState">
+			<soap12:operation soapAction="http://imtech.eu/GetSubscriptionState" style="document"/>
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+		<wsdl:operation name="GetHistoricalData">
+			<soap12:operation soapAction="http://imtech.eu/GetHistoricalData"  style="document" />
+			<wsdl:input>
+				<soap:body use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+	</wsdl:binding>
+	<wsdl:service name="LocalMonitoringWebservice">
+		<wsdl:port name="LocalMonitoringWebserviceSoap" binding="tns:LocalMonitoringWebserviceSoap">
+			<soap:address location="http://localhost:30070/MonitoringSystemWebservice/LocalMonitoringWebservice.asmx" />
+		</wsdl:port>
+		<wsdl:port name="LocalMonitoringWebserviceSoap12" binding="tns:LocalMonitoringWebserviceSoap12">
+			<soap12:address location="http://localhost:30070/MonitoringSystemWebservice/LocalMonitoringWebservice.asmx" />
+		</wsdl:port>
+	</wsdl:service>
+</wsdl:definitions>
