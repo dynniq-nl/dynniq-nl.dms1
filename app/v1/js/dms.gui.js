@@ -26,12 +26,19 @@ writefilter = function () {
 		innerText = "";
 		Aim.listData.forEach(function (row) {
 			var item = Aim.api.item[row.id];
+      console.log(item);
 			if (!item || itemList.indexOf(Number(item.id)) == -1) return;
 			if (!item.AttributeType || !AttributeTypeFilter[item.AttributeType] || AttributeTypeFilter[item.AttributeType].checked) with (item.elTR = appendTag("tr", { className: (hisButtonId == "actueel" ? item.id : "") + " " + (AttributeTypeFilter[item.AttributeType] ? AttributeTypeFilter[item.AttributeType].filtertype || "" : "") })) {
 				if (item.selected == 0) setAttribute('disabled', '');
 				appendTag("td", { className: "symbol Value", attr: { value: row.Value || 0, [item.AttributeType]: row.Value || 0 } });
 				appendTag("td", { className: "ModifiedDT", innerText: row.modifiedDT ? new Date(row.modifiedDT).toISOString().substr(0, 19).replace(/T/, ' ') : "" });
-				for (var path = [], master = item; master && master.class != 'dms_Group'; master = master.master) path.push(master.title);
+
+        for (var path = [], master = item; master && master.class != 'EquipmentModule'; master = master.master) {
+          console.log(master.title, master);
+          path.push(master.title);
+        }
+        // console.log(row);
+
 				appendTag("td", { innerText: path.reverse().join('.') });
 				var value = 'TextualValue' in row ? Number(row.TextualValue) : (!row.values || !row.values.Value ? '#' : row.Value);
 				setAttribute('value', value || 0);
@@ -156,6 +163,7 @@ Aim.assign(gui = {
 		console.log('TOP', Aim, Aim.deviceTopID, Aim.api.item[Aim.deviceTopID]);
 		folders.innerText = '';
 		(writeNode = function (item, i) {
+      console.log(item);
 			if (item.schema == 'Attribute') return;
 			if (item.schema == 'Device') return;
 			with (item.elLI = this.appendTag('li', {})) {
