@@ -9,11 +9,16 @@ const AttributeTypeFilter = {
 	PreWarning_1: { filtertype: "alarm", stateButton: "Warning" },
 	PreWarning_2: { filtertype: "alarm", stateButton: "Warning" },
 	PreWarning_3: { filtertype: "alarm", stateButton: "Warning" },
+	PreWarning_4: { filtertype: "alarm", stateButton: "Warning" },
+	PreWarning_5: { filtertype: "alarm", stateButton: "Warning" },
+	PreWarning_6: { filtertype: "alarm", stateButton: "Warning" },
+	PreWarning_7: { filtertype: "alarm", stateButton: "Warning" },
 	Measurement_1: { filtertype: "measurement", stateButton: "" },
 	Measurement_2: { filtertype: "measurement", stateButton: "" },
 	Measurement_3: { filtertype: "measurement", stateButton: "" },
 	Measurement_4: { filtertype: "measurement", stateButton: "" },
 	Measurement_5: { filtertype: "measurement", stateButton: "" },
+	Measurement_6: { filtertype: "measurement", stateButton: "" },
 	MeasurementErrorFlag: { filtertype: "measurement", stateButton: "" },
 }
 
@@ -26,7 +31,7 @@ writefilter = function () {
 		innerText = "";
 		Aim.listData.forEach(function (row) {
 			var item = Aim.api.item[row.id];
-      console.log(item);
+			// console.log(item);
 			if (!item || itemList.indexOf(Number(item.id)) == -1) return;
 			if (!item.AttributeType || !AttributeTypeFilter[item.AttributeType] || AttributeTypeFilter[item.AttributeType].checked) with (item.elTR = appendTag("tr", { className: (hisButtonId == "actueel" ? item.id : "") + " " + (AttributeTypeFilter[item.AttributeType] ? AttributeTypeFilter[item.AttributeType].filtertype || "" : "") })) {
 				if (item.selected == 0) setAttribute('disabled', '');
@@ -34,7 +39,7 @@ writefilter = function () {
 				appendTag("td", { className: "ModifiedDT", innerText: row.modifiedDT ? new Date(row.modifiedDT).toISOString().substr(0, 19).replace(/T/, ' ') : "" });
 
         for (var path = [], master = item; master && master.class != 'EquipmentModule'; master = master.master) {
-          console.log(master.title, master);
+          // console.log(master.title, master);
           path.push(master.title);
         }
         // console.log(row);
@@ -160,10 +165,10 @@ Aim.assign(gui = {
 		app: 'gui'
 	},
 	onload: function (event) {
-		console.log('TOP', Aim, Aim.deviceTopID, Aim.api.item[Aim.deviceTopID]);
+		// console.log('TOP', Aim, Aim.deviceTopID, Aim.api.item[Aim.deviceTopID]);
 		folders.innerText = '';
 		(writeNode = function (item, i) {
-      console.log(item);
+        // console.log(item);
 			if (item.schema == 'Attribute') return;
 			if (item.schema == 'Device') return;
 			with (item.elLI = this.appendTag('li', {})) {
@@ -209,7 +214,7 @@ Aim.assign(gui = {
 		});
 		var treeAttributes = 'connect,connecting,error_read,disconnect,error,CriticalFailure,NonCriticalFailure,Warning'.split(',');
 		for (var i = 0, el, c = folders.getElementsByTagName('DIV') ; el = c[i]; i++) treeAttributes.forEach(function (State) { el.removeAttribute(State); });
-    console.log(Aim.api);
+    // console.log(Aim.api);
 		Aim.api.Attribute.forEach(function (attribute) {
 			if (attribute.elTR && attribute.elTR.parentElement) attribute.elTR.setAttribute('state', attribute.State);
 			for (var parent = attribute; parent; parent = parent.master) {
@@ -234,7 +239,7 @@ Aim.assign(gui = {
 			Aim.disconnected = true;
 		},
 		connect: function (event) {
-			console.log('CONNECT', event.data);
+			// console.log('CONNECT', event.data);
 			var data = event.data;
 			var value = event.data.value || [event.data];
 			value.forEach(api.onload);

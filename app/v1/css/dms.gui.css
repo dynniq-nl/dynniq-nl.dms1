@@ -1,4 +1,4 @@
-﻿html, body {
+html, body {
 	font-family: Calibri;
 	height: 100%;
 }
@@ -121,6 +121,10 @@ table .symbol::before {
 .symbol[PreWarning_1][value='1']::before,
 .symbol[PreWarning_2][value='1']::before,
 .symbol[PreWarning_3][value='1']::before,
+.symbol[PreWarning_4][value='1']::before,
+.symbol[PreWarning_5][value='1']::before,
+.symbol[PreWarning_6][value='1']::before,
+.symbol[PreWarning_7][value='1']::before,
 .symbol[MeasurementErrorFlag][value='1']::before,
 .symbol[Warning][value='1']::before{
 	background-color: rgba(255,255,0,1);

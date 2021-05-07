@@ -16,6 +16,7 @@ class AcsmSoapClient extends SoapClient {
 		log::put([method=>'acsmSoapClient',step=>'input',data=>$request]);
     $request=str_replace('env:Envelope','soap:Envelope',$request);
 		log::put([method=>'acsmSoapClient',step=>'output',data=>$request]);
+    log::put([method=>'acsmSoapClient',step=>'test',data=>$location]);
     return parent::__doRequest($request,$location,$action,$version);
   }
 }
@@ -30,8 +31,8 @@ class acsm {
       $input=json_decode($input,true);
       try {
         $options=[
-          'location' 					=> $config->ReportURL, 
-          //'uri' 							=> 'http://172.26.90.25:30070/sites/dms/api/v1/SoapClientAcsm.php', 
+          'location' 					=> $config->ReportURL,
+          //'uri' 							=> 'http://172.26.90.25:30070/sites/dms/api/v1/SoapClientAcsm.php',
           'uri' 							=> 'http://'.$_SERVER[HTTP_HOST].$_SERVER[URL],
           'soap_version' 			=> SOAP_1_2,
           'trace'							=> DEBUG_SOAP,
@@ -44,22 +45,24 @@ class acsm {
         ];
         array_walk($input[WebLogItemArray],function(&$val){array_walk($val,function(&$val,$key){$val="<$key>$val</$key>";});$val='<WebLogItem>'.implode("",$val).'</WebLogItem>';});
         $input_xml='<WebLogItemArray xmlns="http://www.imtech.eu/">'.implode("",$input[WebLogItemArray]).'</WebLogItemArray>';
-
 				header('Content-Type: application/soap+xml; charset=utf-8');
 				header('Content-Length: '.strlen($input_xml));
-
         log::put([method=>'acsm.put',step=>'connect',data=>[xml=>$input_xml,options=>$options]]);
 				if ($GLOBALS[acsmsoapclient]) {
 					$client = new AcsmSoapClient( null, $options);
         //log::put([method=>'acsm.put',step=>'ReportChanges']);
+          // log::put([method=>'acsmSoapClient',step=>'test',data=>'test1']);
 					$response->response = $client->ReportChanges(new SoapVar($input_xml, XSD_ANYXML));
-				} 
+          // log::put([method=>'acsmSoapClient',step=>'test',data=>'test2']);
+				}
 				else {
+          // log::put([method=>'acsmSoapClient',step=>'test',data=>'test3']);
 	        $client = new SoapClient( null, $options);
+          // log::put([method=>'acsmSoapClient',step=>'test',data=>'test4']);
 				}
         $response->response = $client->ReportChanges($input_xml);
         log::put([method=>'acsm.put',step=>'response',data=>$response]);
-      } 
+      }
       catch ( SoapFault $sf ) {
 				if (!strstr($f[faultstring],"Fetching")) {
 					//$config->Active=false;
@@ -84,12 +87,12 @@ class weblog {
 		$columns=implode(",",array_keys((array)$WebLogItem));
 		$q="INSERT acsm.dbo.WebLogItem ($columns)VALUES('".implode("','",array_values((array)$WebLogItem))."');
 		--SELECT * FROM acsm.dbo.WebLogItem WHERE LogID=@@IDENTITY;
-		SELECT LogID,LocationID,GroupID,SystemInstanceID,TagID,LogType,TextualValue,NumericValue,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127)TimeStamp,Quality,StandardOutput 
-		--SELECT LogID,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127)TimeStamp,$columns 
+		SELECT LogID,LocationID,GroupID,SystemInstanceID,TagID,LogType,TextualValue,NumericValue,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127)TimeStamp,Quality,StandardOutput
+		--SELECT LogID,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127)TimeStamp,$columns
 		FROM acsm.dbo.WebLogItem WHERE LogID=@@IDENTITY;
 		";
 
-        $row=fetch_object(query($q)); 
+        $row=fetch_object(query($q));
 
 									//SELECT SystemInstanceID,GroupID,LocationID,TagID,LogType,TextualValue,NumericValue,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127)TimeStamp,Quality,StandardOutput FROM acsm.dbo.WebLogItem WHERE LogID=@@IDENTITY;"));
 
@@ -97,14 +100,14 @@ class weblog {
 
         array_push($values,$row);
     }
-		query("DELETE acsm.dbo.weblogitem where datediff (day,timestamp,getutcdate())>20;"); 
+		query("DELETE acsm.dbo.weblogitem where datediff (day,timestamp,getutcdate())>20;");
 		//$response->AddWebLogItem=Done;
 		//acsm::put([WebLogItemArray=>$values]);
     die(json_encode(acsm::put([WebLogItemArray=>$values]),JSON_PRETTY_PRINT));
   }
   function get() {
     //$res=query($q="SELECT TagID id,CONVERT(VARCHAR(50),CAST(TimeStamp AS DATETIMEOFFSET),127) modifiedDT,TextualValue,NumericValue,StandardOutput,Quality FROM acsm.dbo.WebLogItem WHERE TagID>0 AND ".$_GET[filter]." ORDER BY logID DESC");
-    $res=query($q="SELECT TOP 10000 CONVERT(VARCHAR(50),CAST(LogDateTime AS DATETIMEOFFSET),127)modifiedDT,id,Value FROM aimhis.om.event 
+    $res=query($q="SELECT TOP 10000 CONVERT(VARCHAR(50),CAST(LogDateTime AS DATETIMEOFFSET),127)modifiedDT,id,Value FROM aimhis.om.event
 WHERE Value IS NOT NULL AND id > 0 AND method='setAttribute' AND
 ".$_GET[filter]." ORDER BY logID DESC");
     $rows=array();
